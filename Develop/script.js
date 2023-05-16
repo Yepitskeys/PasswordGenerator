@@ -1,11 +1,11 @@
 // Password Characters
-var SpecialCharacters = ['@', '#', '!', '$', '%', '^', '&', '*', '(', ')', '-', '+',];
+var SpecialCharacters = ['@', '#', '!', '$', '%', '^', '&', '*', '(', ')', '-', '+', ];
 
-var NumberCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ];
+var Numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ];
 
-var UpperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',];
+var UpperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ];
 
-var LowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',];
+var LowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ];
 
 // PROVIDED STARTER CODE: Variable to store length of password from user input
 function getPasswordOptions() {
@@ -25,18 +25,18 @@ function getPasswordOptions() {
     return null;
   }
 
-  // Password maximum length
+  // ** Added Password maximum length
   if (length > 128) {
     alert('Password is too long. Cannot use no more than 128 characters');
     return null;
   }
 
   // PROVIDED STARTER CODE: Variable to store boolean regarding the inclusion of special characters
-  // Added variable for numbers, lower case and capital letters
+  // **Added variable for numbers, lower case and capital letters
   var hasSpecialCharacters = confirm(
     'Click OK to confirm including special characters.'
   );
-  var hasNumberCharacters = confirm(
+  var hasNumbers = confirm(
     'Click OK to confirm including number characters.'
   );
   var hasUpperCase = confirm(
@@ -49,19 +49,20 @@ function getPasswordOptions() {
     //Created conditional statement to check for characters
   if (
     hasSpecialCharacters === false &&
-    hasNumericCharacters === false &&
+    hasNumbers === false &&
     hasUpperCase === false &&
     hasLowerCase === false
   ) {
-    alert('Password is missing required characters')
+    alert('Password is missing required characters');
+    return null;
   }
 
   // PROVIDED STARTER CODE: Object to store user input
-  // **Added the variable to check for the character types
+  // **Added the variable to check for the Number character, UpperCase and LowerCase,
    var passwordOptions = {
     length: length,
     hasSpecialCharacters: hasSpecialCharacters,
-    hasNumberCharacters: hasNumberCharacters,
+    hasNumbers: hasNumbers,
     hasUpperCase: hasUpperCase,
     hasLowerCase: hasLowerCase,
    }
@@ -78,31 +79,22 @@ function getRandom(arr) {
 }
 
 // PROVIDED STARTER CODE: Function to generate password with user input
+ // ***Added code for the number, Uppercase and Lowercase characters if statements
 function generatePassword() {
-
   var options = getPasswordOptions();
-  // PROVIDED STARTER CODE: Variable to store password as it's being concatenated
   var result = [];
-
-  // PROVIDED STARTER CODE: Array to store types of characters to include in password
   var possibleCharacters = [];
-
-  // PROVIDED STARTER CODE: Array to contain one of each type of chosen character to ensure each will be used
   var guaranteedCharacters = [];
-
-  // PROVIDED STARTER CODE: Check if an options object exists, if not exit the function
   if (!options) return null;
 
-  // Conditional statement that adds array of special characters into array of possible characters based on user input
-  // Push new random special character to guaranteedCharacters
-  // ***Added code for the number, Uppercase and Lowercase characters
   if (options.hasSpecialCharacters) {
-    possibleCharacters = possibleCharacters.concat(specialCharacters);
-    guaranteedCharacters.push(getRandom(specialCharacters));
+    possibleCharacters = possibleCharacters.concat(SpecialCharacters);
+    guaranteedCharacters.push(getRandom(SpecialCharacters));
   }
-  if (options.hasNumberCharacters) {
-    possibleCharacters = possibleCharacters.concat(NumberCharacters);
-    guaranteedCharacters.push(getRandom(NumberCharacters));
+  
+  if (options.hasNumbers) {
+    possibleCharacters = possibleCharacters.concat(Numbers);
+    guaranteedCharacters.push(getRandom(Numbers));
   }
   if (options.hasLowerCase) {
     possibleCharacters = possibleCharacters.concat(LowerCase);
@@ -113,14 +105,20 @@ function generatePassword() {
     guaranteedCharacters.push(getRandom(UpperCase));
   }
 
-// Loop Array
-  for (var i = 0; i < guaranteedCharacters.length; i++){
+// **Added forloops for password length
+  for (var i = 0; i < options.length; i++){
     var possibleCharacters = getRandom(possibleCharacters);
-    result.push(possibleCharacters)
+
+    result.push(possibleCharacters);
   }
+  for (var i = 0; i < guaranteedCharacters.length; i++){
+    result[i] = guaranteedCharacters[i];
+  }
+
 // PROVIDED STARTER CODE: Transform the result into a string and pass into writePassword
-  return result.join('');
+    return result.join('');
 }
+
 // PROVIDED STARTER CODE:
 var generateBtn = document.querySelector("#generate");
 
